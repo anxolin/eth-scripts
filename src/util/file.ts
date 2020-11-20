@@ -1,23 +1,24 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 // import Debug from 'debug'
 import chalk from 'chalk'
 import { ethers } from 'ethers'
 import fs from 'fs'
 import { Result } from 'types'
 
-export function readAddressesFromFile(file: string): Result<string[]> {
-  if (!fs.existsSync(file)) {
+export function readAddressesFromFile(filePath: string): Result<string[]> {
+  if (!fs.existsSync(filePath)) {
     return {
       isError: true,
-      errorMsg: chalk`{red The file {white ${file}} doesn't exist}`,
+      errorMsg: chalk`{red The file {white ${filePath}} doesn't exist}`,
     }
   }
 
-  const maybeAddresses = JSON.parse(fs.readFileSync(file, 'utf8'))
+  const maybeAddresses = JSON.parse(fs.readFileSync(filePath, 'utf8'))
 
   if (!Array.isArray(maybeAddresses)) {
     return {
       isError: true,
-      errorMsg: chalk`{red The file {white ${file}} must contain an array of addresses (string)}`,
+      errorMsg: chalk`{red The file {white ${filePath}} must contain an array of addresses (string)}`,
     }
   }
 
@@ -43,4 +44,9 @@ export function readAddressesFromFile(file: string): Result<string[]> {
     isError: false,
     value: addresses,
   }
+}
+
+export function writeJson(filePath: string, data: unknown): void {
+  const json = JSON.stringify(data, null, 2)
+  fs.writeFileSync(filePath, json)
 }

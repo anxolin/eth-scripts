@@ -5,6 +5,7 @@ import assert from 'assert'
 
 import { registerCommand as regBlockNumber } from 'commands/blockNumber'
 import { registerCommand as regBalance } from 'commands/balance'
+import { registerCommand as regDxUserDeposits } from 'commands/dxUsersDeposit'
 import { registerCommand as regDxBalances } from 'commands/dxBalances'
 
 console.log('\n' + chalk.yellow(figlet.textSync('eth-scripts', { horizontalLayout: 'full' })) + '\n')
@@ -17,6 +18,7 @@ program.version('0.0.1').description('A miscellaneous CLI for interacting with E
 // Register commands
 regBlockNumber(program)
 regBalance(program)
+regDxUserDeposits(program)
 regDxBalances(program)
 
 program.parse(process.argv)
