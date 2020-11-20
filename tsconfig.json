@@ -9,5 +9,8 @@
     "forceConsistentCasingInFileNames": true, /* Disallow inconsistently-cased references to the same file. */
     "outDir": "build",
     "sourceMap": true,
+    "types": [
+      "@types/node"
+    ]
   }
 }
