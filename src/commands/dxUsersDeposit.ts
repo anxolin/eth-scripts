@@ -16,7 +16,7 @@ async function run(filePath: string): Promise<void> {
   const users: Set<string> = new Set()
   for (let fromBlock = dxDeploymentBlock; fromBlock < blockNumber; fromBlock += BATCH_SIZE) {
     const toBlock = fromBlock + BATCH_SIZE - 1
-    console.log(chalk`Query deposits from block {yellow ${fromBlock}} and {yellow ${blockNumber}}`)
+    console.log(chalk`Query deposits from block {yellow ${fromBlock}} and {yellow ${toBlock}}`)
     const allDeposits = await dxContract.queryFilter(allDepositFilter, fromBlock, toBlock)
     const addressesPromise = allDeposits.map(async (event) =>
       event.getTransactionReceipt().then((receipt) => receipt.from),
