@@ -12,6 +12,7 @@
     "types": [
       "@types/node"
     ],
-    "baseUrl": "src"
+    "baseUrl": "src",
+    "resolveJsonModule": true
   }
 }
