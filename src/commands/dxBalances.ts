@@ -1,43 +1,52 @@
 import { CommanderStatic } from 'commander'
-import { readAddressesFromFile } from 'util/file'
-import { dxAddress, dxTokens } from 'const'
+import { readAddressesFromFile, writeJson } from 'util/file'
+import { dxAddress } from 'const'
 import { Dutchx__factory } from 'contracts/gen/factories/Dutchx__factory'
 import { getProvider } from 'util/ethers'
 import chalk from 'chalk'
-import { BigNumber } from 'ethers'
 import { Dutchx } from 'contracts/gen'
+import { withRetry } from 'util/misc'
+import tokenDetailsJson from '../../data/dx-token-details.json'
+import { TokenDetails } from 'types'
+import { ethers } from 'ethers'
 
-interface Balances {
+interface TokenDetailsBalance extends TokenDetails {
   user: string
-  balances: Map<string, BigNumber>
+  balance: string
+  balanceAtoms: string
 }
 
-async function getBalances(user: string, dxContract: Dutchx): Promise<Balances> {
-  const balancePromises = dxTokens.map(async (token) => {
+async function getUserBalances(
+  user: string,
+  dxContract: Dutchx,
+  tokens: TokenDetails[],
+): Promise<TokenDetailsBalance[]> {
+  const balancePromises = tokens.map(async (token: TokenDetails) => {
     return {
       token,
-      balance: await dxContract.balances(token, user),
+      balanceAtoms: await dxContract.balances(token.address, user),
     }
   })
   const balances = await Promise.all(balancePromises)
 
-  return {
-    user,
-    balances: balances.reduce((acc, balanceItem) => {
-      const { token, balance } = balanceItem
+  return balances.reduce<TokenDetailsBalance[]>((acc, balanceItem) => {
+    const { token, balanceAtoms } = balanceItem
 
-      // Return all non-zero balances
-      if (!balance.isZero) {
-        acc.set(token, balance)
-      }
-
-      return acc
-    }, new Map()),
-  }
+    // Return all non-zero balances
+    if (!balanceAtoms.isZero()) {
+      acc.push({
+        ...token,
+        user,
+        balance: ethers.utils.formatUnits(balanceAtoms, token.decimals),
+        balanceAtoms: balanceAtoms.toString(),
+      })
+    }
+    return acc
+  }, [])
 }
 
-async function run(file: string): Promise<void> {
-  const users = readAddressesFromFile(file)
+async function run(usersFilePath: string, outputFilePath: string | undefined): Promise<void> {
+  const users = readAddressesFromFile(usersFilePath)
   if (users.isError) {
     console.error(users.errorMsg)
     return
@@ -46,23 +55,33 @@ async function run(file: string): Promise<void> {
   const provider = getProvider()
   const dxContract = Dutchx__factory.connect(dxAddress, provider)
 
-  const balancePromises = users.value.map((user) => getBalances(user, dxContract))
-  const balances = (await Promise.all(balancePromises)).filter(({ balances }) => balances.size > 0)
+  let balances: TokenDetailsBalance[] = []
+  for (const user of users.value) {
+    await withRetry(async () => {
+      console.log(chalk`Get balances for user {yellow ${user}}`)
+      const balancesUser = await getUserBalances(user, dxContract, tokenDetailsJson)
+      balances = balances.concat(balancesUser)
+      console.log(
+        chalk`\t User has {white ${balancesUser.length}} tokens with balance. Total {white ${balances.length}}`,
+      )
+    })
+  }
 
-  balances.forEach(({ user, balances }) => {
-    console.log(chalk`User ${user}:`)
-    for (const [token, balance] of balances) {
-      console.log(`token ${token}, balance = ${balance}`)
-    }
+  balances.forEach((balanceItem) => {
+    const { label, balance, user } = balanceItem
+    console.log(chalk``)
+    console.log(chalk`{yellow ${user}}: {white ${balance} ${label}}`)
   })
-  console.log(chalk`TOTAL {white ${balances.length}} users with balance in DutchX`)
-
-  // console.log(chalk`Balance: {green ${ethers.utils.formatEther(balance)} ETH} (${balance} wei)`)
+  console.log(chalk`TOTAL {white ${balances.length}} token balances in DutchX`)
+  if (outputFilePath) {
+    writeJson(outputFilePath, balances)
+    console.log(chalk`Written users in file {white ${outputFilePath}}`)
+  }
 }
 
 export function registerCommand(program: CommanderStatic): void {
   program
-    .command('dx-balances <address-list-json-file>')
+    .command('dx-balances <address-list-json-file> <address-list-json-file>')
     .description('Get the DutchX balances from a list of addresses')
     .action(run)
 }
