@@ -2,5 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { Dutchx } from './Dutchx'
+export type { Erc20 } from './Erc20'
 
 export { Dutchx__factory } from './factories/Dutchx__factory'
+export { Erc20__factory } from './factories/Erc20__factory'

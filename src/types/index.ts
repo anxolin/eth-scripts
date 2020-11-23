@@ -15,3 +15,11 @@ export interface ErrorResult {
   isError: true
   errorMsg: string
 }
+
+export interface TokenDetails {
+  address: string
+  decimals: number
+  label: string
+  symbol?: string
+  name?: string
+}
