@@ -1,0 +1,92 @@
+[
+  {
+    "label": "GNO",
+    "name": "Gnosis Token",
+    "symbol": "GNO",
+    "decimals": 18,
+    "address": "0x6810e776880c02933d47db1b9fc05908e5386b96",
+    "user": "0xFCd81C0D8fcDBA864cc558c17aF8EF83D05bdF45",
+    "balance": "0.000000000000066348",
+    "balanceAtoms": "66348"
+  },
+  {
+    "label": "WETH",
+    "name": "Wrapped Ether",
+    "symbol": "WETH",
+    "decimals": 18,
+    "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+    "user": "0xFCd81C0D8fcDBA864cc558c17aF8EF83D05bdF45",
+    "balance": "0.000000000000000643",
+    "balanceAtoms": "643"
+  },
+  {
+    "label": "SNT",
+    "name": "Status Network Token",
+    "symbol": "SNT",
+    "decimals": 18,
+    "address": "0x744d70fdbe2ba4cf95131626614a1763df805b9e",
+    "user": "0xFCd81C0D8fcDBA864cc558c17aF8EF83D05bdF45",
+    "balance": "0.000000000000474239",
+    "balanceAtoms": "474239"
+  },
+  {
+    "label": "GEN",
+    "name": "DAOstack",
+    "symbol": "GEN",
+    "decimals": 18,
+    "address": "0x543ff227f64aa17ea132bf9886cab5db55dcaddf",
+    "user": "0xFCd81C0D8fcDBA864cc558c17aF8EF83D05bdF45",
+    "balance": "0.000000000000608106",
+    "balanceAtoms": "608106"
+  },
+  {
+    "label": "LRC",
+    "name": "LoopringCoin V2",
+    "symbol": "LRC",
+    "decimals": 18,
+    "address": "0xbbbbca6a901c926f240b89eacb641d8aec7aeafd",
+    "user": "0xFCd81C0D8fcDBA864cc558c17aF8EF83D05bdF45",
+    "balance": "0.000550000000185717",
+    "balanceAtoms": "550000000185717"
+  },
+  {
+    "label": "NMR",
+    "name": "Numeraire",
+    "symbol": "NMR",
+    "decimals": 18,
+    "address": "0x1776e1f26f98b1a5df9cd347953a26dd3cb46671",
+    "user": "0xFCd81C0D8fcDBA864cc558c17aF8EF83D05bdF45",
+    "balance": "0.000000000000027143",
+    "balanceAtoms": "27143"
+  },
+  {
+    "label": "DNT",
+    "name": "district0x Network Token",
+    "symbol": "DNT",
+    "decimals": 18,
+    "address": "0x0abdace70d3790235af448c88547603b945604ea",
+    "user": "0xFCd81C0D8fcDBA864cc558c17aF8EF83D05bdF45",
+    "balance": "0.000000000012193368",
+    "balanceAtoms": "12193368"
+  },
+  {
+    "label": "MANA",
+    "name": "Decentraland MANA",
+    "symbol": "MANA",
+    "decimals": 18,
+    "address": "0x0f5d2fb29fb7d3cfee444a200298f468908cc942",
+    "user": "0xFCd81C0D8fcDBA864cc558c17aF8EF83D05bdF45",
+    "balance": "0.000000000001081212",
+    "balanceAtoms": "1081212"
+  },
+  {
+    "label": "BLZ",
+    "name": "Bluzelle Token",
+    "symbol": "BLZ",
+    "decimals": 18,
+    "address": "0x5732046a883704404f284ce41ffadd5b007fd668",
+    "user": "0xFCd81C0D8fcDBA864cc558c17aF8EF83D05bdF45",
+    "balance": "0.000000000001349479",
+    "balanceAtoms": "1349479"
+  }
+]
