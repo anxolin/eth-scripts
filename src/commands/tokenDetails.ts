@@ -36,6 +36,7 @@ async function run(tokensFilePath: string, outputFilePath: string | undefined) {
     console.log(chalk`Token {yellow ${label}} (${decimals}): {white ${address}}`)
   })
   console.log(chalk`TOTAL {white ${tokenDetails.length}} tokens`)
+
   if (outputFilePath) {
     writeJson(outputFilePath, tokenDetails)
     console.log(chalk`Written users in file {white ${outputFilePath}}`)

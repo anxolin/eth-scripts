@@ -9,6 +9,7 @@ import { withRetry } from 'util/misc'
 import tokenDetailsJson from '../../data/dx-token-details.json'
 import { TokenDetails } from 'types'
 import { ethers } from 'ethers'
+import { CsvHeaders, writeCsvFile } from 'util/csv'
 
 interface TokenDetailsBalance extends TokenDetails {
   user: string
@@ -45,7 +46,7 @@ async function getUserBalances(
   }, [])
 }
 
-async function run(usersFilePath: string, outputFilePath: string | undefined): Promise<void> {
+async function run(usersFilePath: string, outputFilePath: string): Promise<void> {
   const users = readAddressesFromFile(usersFilePath)
   if (users.isError) {
     console.error(users.errorMsg)
@@ -73,15 +74,29 @@ async function run(usersFilePath: string, outputFilePath: string | undefined): P
     console.log(chalk`{yellow ${user}}: {white ${balance} ${label}}`)
   })
   console.log(chalk`TOTAL {white ${balances.length}} token balances in DutchX`)
-  if (outputFilePath) {
-    writeJson(outputFilePath, balances)
-    console.log(chalk`Written users in file {white ${outputFilePath}}`)
-  }
+
+  // if (outputFilePath) {
+  //   writeJson(outputFilePath, balances)
+  //   console.log(chalk`Written users in file {white ${outputFilePath}}`)
+  // }
+
+  const headers: CsvHeaders = [
+    { id: 'user', title: 'user' },
+    { id: 'balance', title: 'balance' },
+    { id: 'label', title: 'label' },
+    { id: 'name', title: 'Token Name' },
+    { id: 'balanceAtoms', title: 'Balance Atoms' },
+    { id: 'decimals', title: 'Token Decimals' },
+    { id: 'address', title: 'Token Address' },
+    { id: 'symbol', title: 'Token Symbol' },
+  ]
+  writeCsvFile(outputFilePath, balances, headers)
+  console.log(chalk`Written users in file {white ${outputFilePath}}`)
 }
 
 export function registerCommand(program: CommanderStatic): void {
   program
-    .command('dx-balances <address-list-json-file> <address-list-json-file>')
+    .command('dx-balances <address-list-json-file> <output-csv-file>')
     .description('Get the DutchX balances from a list of addresses')
     .action(run)
 }
