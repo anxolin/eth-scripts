@@ -14,3 +14,5 @@ export async function withRetry<T>(run: () => Promise<T>, attempts = 100): Promi
     })
   })
 }
+
+export const noop: () => undefined = () => undefined
