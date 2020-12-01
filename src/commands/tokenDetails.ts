@@ -1,24 +1,8 @@
 import chalk from 'chalk'
 import { CommanderStatic } from 'commander'
-import { Erc20__factory } from 'contracts/gen'
-import { DEFAULT_DECIMALS } from 'const'
-import { providers } from 'ethers'
-import { TokenDetails } from 'types'
 import { readAddressesFromFile, writeJson } from 'util/file'
+import { getTokensDetails } from 'util/tokens'
 import { getProvider } from '../util/ethers'
-
-async function getTokenDetails(address: string, provider: providers.Provider): Promise<TokenDetails> {
-  const token = Erc20__factory.connect(address, provider)
-
-  const [name, symbol, decimals] = await Promise.all([
-    token.name().catch(() => undefined),
-    token.symbol().catch(() => undefined),
-    token.decimals().catch(() => DEFAULT_DECIMALS),
-  ])
-  const label = symbol || name || address
-
-  return { label, name, symbol, decimals, address }
-}
 
 async function run(tokensFilePath: string, outputFilePath: string | undefined) {
   const tokens = readAddressesFromFile(tokensFilePath)
@@ -28,8 +12,7 @@ async function run(tokensFilePath: string, outputFilePath: string | undefined) {
   }
 
   const provider = getProvider()
-  const tokenDetailPromises = tokens.value.map((token) => getTokenDetails(token, provider))
-  const tokenDetails = await Promise.all(tokenDetailPromises)
+  const tokenDetails = await getTokensDetails(tokens.value, provider)
 
   tokenDetails.forEach((tokenDetails) => {
     const { address, label, decimals } = tokenDetails
