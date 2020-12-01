@@ -15,6 +15,7 @@
   "author": "",
   "license": "UNLICENSED",
   "dependencies": {
+    "@uniswap/sdk": "^3.0.3",
     "csv-parser": "^2.3.3",
     "debug": "^4.3.1",
     "ethers": "^5.0.20"
