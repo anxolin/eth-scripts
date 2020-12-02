@@ -1,11 +1,12 @@
 import { Erc20__factory } from 'contracts/gen'
 import { DEFAULT_DECIMALS } from 'const'
-import { providers } from 'ethers'
+import { ethers, providers } from 'ethers'
 import { TokenDetails } from 'types'
 import { noop } from './misc'
 
 export async function getTokenDetails(address: string, provider: providers.Provider): Promise<TokenDetails> {
-  const token = Erc20__factory.connect(address, provider)
+  const addressNormalized = ethers.utils.getAddress(address)
+  const token = Erc20__factory.connect(addressNormalized, provider)
 
   const [name, symbol, decimals] = await Promise.all([
     token.name().catch(noop),
@@ -14,7 +15,7 @@ export async function getTokenDetails(address: string, provider: providers.Provi
   ])
   const label = symbol || name || address
 
-  return { label, name, symbol, decimals, address }
+  return { address: addressNormalized, label, name, symbol, decimals }
 }
 
 export async function getTokensDetails(addresses: string[], provider: providers.Provider): Promise<TokenDetails[]> {
