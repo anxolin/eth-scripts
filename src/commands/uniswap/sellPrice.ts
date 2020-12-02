@@ -3,7 +3,7 @@ import chalk from 'chalk'
 import { CommanderStatic } from 'commander'
 import { ethers } from 'ethers'
 import { getProvider } from 'util/ethers'
-import { getPairInfo, printPrice } from './uniswapUtils'
+import { getPairInfo, printPools, printPrice, printTrade } from './uniswapUtils'
 
 async function run(sellTokenAddress: string, receiveTokenAddress: string, amount?: string) {
   const chainId = ChainId.MAINNET
@@ -14,23 +14,21 @@ async function run(sellTokenAddress: string, receiveTokenAddress: string, amount
     chainId,
     provider,
   )
-  const pairAddress = Pair.getAddress(pair.token0, pair.token1)
 
   const route = new Route([pair], pair.token0)
+  printTrade({
+    label: 'Sell Trade',
+    pair,
+    amount,
+    sellTokenLabel,
+    receiveTokenLabel,
+  })
 
-  console.log()
-  console.log(chalk`{bold Trade}:`)
-  console.log(chalk`\tSell Token: {yellow ${sellTokenLabel}} (${pair.token0.decimals}): {white ${pair.token0.address}}`)
-  console.log(
-    chalk`\tReceive Token: {yellow ${receiveTokenLabel}} (${pair.token1.decimals}): {white ${pair.token1.address}}`,
-  )
-  console.log(chalk`\tSell Amount: {yellow ${amount}}`)
-
-  console.log()
-  console.log(chalk`{bold Pools}:`)
-  console.log(chalk`\tPair Address: {white ${pairAddress}}`)
-  console.log(chalk`\t${sellTokenLabel} Reserve: {white ${pair.reserve0.toExact()} ${sellTokenLabel}}`)
-  console.log(chalk`\t${receiveTokenLabel} Reserve: {white ${pair.reserve1.toExact()} ${receiveTokenLabel}}`)
+  printPools({
+    pair,
+    sellTokenLabel,
+    receiveTokenLabel,
+  })
 
   console.log()
   console.log(chalk`{bold Prices}:`)

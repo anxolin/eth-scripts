@@ -47,3 +47,37 @@ export function printPrice(label: string, price: Price, sellTokenLabel: string, 
       .toSignificant(DEFAULT_PRICE_DECIMALS)} ${receiveTokenLabel} per ${sellTokenLabel})`,
   )
 }
+
+export function printTrade(params: {
+  label: string
+  pair: Pair
+  sellTokenLabel: string
+  receiveTokenLabel: string
+  amount?: string
+}): void {
+  const { label, pair, sellTokenLabel, receiveTokenLabel, amount } = params
+  console.log()
+  console.log(chalk`{bold ${label}}:`)
+  console.log(chalk`\tSell Token: {yellow ${sellTokenLabel}} (${pair.token0.decimals}): {white ${pair.token0.address}}`)
+  console.log(
+    chalk`\tReceive Token: {yellow ${receiveTokenLabel}} (${pair.token1.decimals}): {white ${pair.token1.address}}`,
+  )
+  if (amount) {
+    console.log(chalk`\tAmount: {yellow ${amount}}`)
+  }
+}
+
+export function printPools(params: {
+  pair: Pair
+  sellTokenLabel: string
+  receiveTokenLabel: string
+  amount?: string
+}): void {
+  const { pair, sellTokenLabel, receiveTokenLabel } = params
+  const pairAddress = Pair.getAddress(pair.token0, pair.token1)
+  console.log()
+  console.log(chalk`{bold Pools}:`)
+  console.log(chalk`\tPair Address: {white ${pairAddress}}`)
+  console.log(chalk`\t${sellTokenLabel} Reserve: {white ${pair.reserve0.toExact()} ${sellTokenLabel}}`)
+  console.log(chalk`\t${receiveTokenLabel} Reserve: {white ${pair.reserve1.toExact()} ${receiveTokenLabel}}`)
+}
