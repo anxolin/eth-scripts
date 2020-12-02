@@ -1,24 +1,10 @@
-import { ChainId, Fetcher, Pair, Price, Route, Token, TokenAmount, Trade, TradeType } from '@uniswap/sdk'
+import { ChainId, Fetcher, Pair, Route, TokenAmount, Trade, TradeType } from '@uniswap/sdk'
 import chalk from 'chalk'
 import { CommanderStatic } from 'commander'
 import { ethers } from 'ethers'
-import { TokenDetails } from 'types'
 import { getProvider } from 'util/ethers'
 import { getTokensDetails } from 'util/tokens'
-
-const DEFAULT_PRICE_DECIMALS = 8
-
-function toToken(chainId: ChainId, tokenDetails: TokenDetails): Token {
-  return new Token(chainId, tokenDetails.address, tokenDetails.decimals, tokenDetails.symbol, tokenDetails.name)
-}
-
-function printPrice(label: string, price: Price, sellToken: TokenDetails, receiveToken: TokenDetails) {
-  console.log(
-    chalk`${label}: {white ${price.toSignificant(DEFAULT_PRICE_DECIMALS)}} {yellow ${sellToken.label} per ${
-      receiveToken.label
-    }} (${price.invert().toSignificant(DEFAULT_PRICE_DECIMALS)} ${receiveToken.label} per ${sellToken.label})`,
-  )
-}
+import { printPrice, toToken } from './uniswapUtils'
 
 async function run(sellTokenAddress: string, receiveTokenAddress: string, amount?: string) {
   const chainId = ChainId.MAINNET

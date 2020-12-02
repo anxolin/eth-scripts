@@ -1,4 +1,5 @@
 export const DEFAULT_DECIMALS = 18
+export const DEFAULT_PRICE_DECIMALS = 8
 
 // DutchX address:
 //  https://dutchx.readthedocs.io/en/latest/smart-contracts_addresses.html
