@@ -9,7 +9,7 @@ import { registerCommand as balanceCommand } from 'commands/balance'
 import { registerCommand as tcrListCommand } from 'commands/tcrList'
 import { registerCommand as dxUserDepositsCommand } from 'commands/dxUsersDeposit'
 import { registerCommand as dxBalancesCommand } from 'commands/dxBalances'
-import { registerCommand as uniSellPriceCommand } from 'commands/uniSellPrice'
+import { registerCommand as uniSellPriceCommand } from 'commands/uniswap/sellPrice'
 
 console.log('\n' + chalk.yellow(figlet.textSync('eth-scripts', { horizontalLayout: 'full' })) + '\n')
 
