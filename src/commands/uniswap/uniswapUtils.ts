@@ -8,29 +8,26 @@ import { getTokensDetails } from 'util/tokens'
 interface PairInfo {
   pair: Pair
   // Just for convenience, the Pair we also return the labels
-  sellTokenLabel: string
-  receiveTokenLabel: string
+  fromLabel: string
+  toLabel: string
 }
 
 export async function getPairInfo(
-  sellTokenAddress: string,
-  receiveTokenAddress: string,
+  fromAddress: string,
+  toAddress: string,
   chainId: ChainId,
   provider: providers.BaseProvider,
 ): Promise<PairInfo> {
-  const [sellTokenDetails, receiveTokenDetails] = await getTokensDetails(
-    [sellTokenAddress, receiveTokenAddress],
-    provider,
-  )
+  const [fromDetails, toDetails] = await getTokensDetails([fromAddress, toAddress], provider)
 
-  const sellToken = toToken(chainId, sellTokenDetails)
-  const receiveToken = toToken(chainId, receiveTokenDetails)
+  const sellToken = toToken(chainId, fromDetails)
+  const receiveToken = toToken(chainId, toDetails)
   const pair = await Fetcher.fetchPairData(sellToken, receiveToken, provider)
 
   return {
     pair,
-    sellTokenLabel: sellTokenDetails.label,
-    receiveTokenLabel: receiveTokenDetails.label,
+    fromLabel: fromDetails.label,
+    toLabel: toDetails.label,
   }
 }
 
@@ -49,31 +46,24 @@ export function printPrice(label: string, price: Price, sellTokenLabel: string, 
 }
 
 export function printTrade(params: {
-  label: string
+  isSale: boolean
   pair: Pair
-  sellTokenLabel: string
-  receiveTokenLabel: string
+  fromLabel: string
+  toLabel: string
   amount?: string
 }): void {
-  const { label, pair, sellTokenLabel, receiveTokenLabel, amount } = params
+  const { isSale, pair, fromLabel, toLabel, amount } = params
   console.log()
-  console.log(chalk`{bold ${label}}:`)
-  console.log(chalk`\tSell Token: {yellow ${sellTokenLabel}} (${pair.token0.decimals}): {white ${pair.token0.address}}`)
-  console.log(
-    chalk`\tReceive Token: {yellow ${receiveTokenLabel}} (${pair.token1.decimals}): {white ${pair.token1.address}}`,
-  )
+  console.log(chalk`{bold ${isSale ? 'Sell Trade' : 'Buy Trade'}}:`)
+  console.log(chalk`\tFrom: {yellow ${fromLabel}} (${pair.token0.decimals}): {white ${pair.token0.address}}`)
+  console.log(chalk`\tTo: {yellow ${toLabel}} (${pair.token1.decimals}): {white ${pair.token1.address}}`)
   if (amount) {
-    console.log(chalk`\tAmount: {yellow ${amount}}`)
+    console.log(chalk`\t${isSale ? 'Sell ' : 'Receive'} Amount: {white ${amount} ${isSale ? fromLabel : toLabel}}`)
   }
 }
 
-export function printPools(params: {
-  pair: Pair
-  sellTokenLabel: string
-  receiveTokenLabel: string
-  amount?: string
-}): void {
-  const { pair, sellTokenLabel, receiveTokenLabel } = params
+export function printPools(params: { pair: Pair; fromLabel: string; toLabel: string; amount?: string }): void {
+  const { pair, fromLabel: sellTokenLabel, toLabel: receiveTokenLabel } = params
   const pairAddress = Pair.getAddress(pair.token0, pair.token1)
   console.log()
   console.log(chalk`{bold Pools}:`)

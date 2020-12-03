@@ -11,23 +11,20 @@ async function run(fromAddress: string, toAddress: string, amount?: string) {
   const { pair, toLabel, fromLabel } = await getPairInfo(fromAddress, toAddress, chainId, provider)
 
   const route = new Route([pair], pair.token0)
-  printTrade({ isSale: true, pair, amount, fromLabel, toLabel })
+  printTrade({ isSale: false, pair, amount, fromLabel: fromLabel, toLabel: toLabel })
   printPools({ pair, fromLabel, toLabel })
 
   console.log()
   console.log(chalk`{bold Prices}:`)
   printPrice('\tMid Price', route.midPrice, fromLabel, toLabel)
   if (amount) {
-    const amountInWei = ethers.utils.parseUnits(amount, pair.token0.decimals)
-    const trade = new Trade(route, new TokenAmount(pair.token0, amountInWei.toString()), TradeType.EXACT_INPUT)
+    const amountInWei = ethers.utils.parseUnits(amount, pair.token1.decimals)
+    const trade = new Trade(route, new TokenAmount(pair.token1, amountInWei.toString()), TradeType.EXACT_OUTPUT)
     printPrice('\tExecution Price', trade.executionPrice, fromLabel, toLabel)
     printPrice('\tNext Mid Price', trade.nextMidPrice, fromLabel, toLabel)
   }
 }
 
 export function registerCommand(program: CommanderStatic): void {
-  program
-    .command('uni-sell-price <from-token> <to-token> [amount]')
-    .description('Get Uniswap selling price')
-    .action(run)
+  program.command('uni-buy-price <from-token> <to-token> [amount]').description('Get Uniswap selling price').action(run)
 }

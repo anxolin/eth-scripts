@@ -9,7 +9,7 @@ import { registerCommand as balanceCommand } from 'commands/balance'
 import { registerCommand as tcrListCommand } from 'commands/tcrList'
 import { registerCommand as dxUserDepositsCommand } from 'commands/dxUsersDeposit'
 import { registerCommand as dxBalancesCommand } from 'commands/dxBalances'
-import { registerCommand as uniSellPriceCommand } from 'commands/uniswap/sellPrice'
+import { registerCommand as uniswapRegister } from 'commands/uniswap'
 
 console.log('\n' + chalk.yellow(figlet.textSync('eth-scripts', { horizontalLayout: 'full' })) + '\n')
 
@@ -25,6 +25,6 @@ balanceCommand(program)
 tcrListCommand(program)
 dxUserDepositsCommand(program)
 dxBalancesCommand(program)
-uniSellPriceCommand(program)
+uniswapRegister(program)
 
 program.parse(process.argv)
