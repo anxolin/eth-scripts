@@ -3,13 +3,14 @@ import figlet from 'figlet'
 import program from 'commander'
 import assert from 'assert'
 
-import { registerCommand as blockNumberCommand } from 'commands/blockNumber'
-import { registerCommand as tokenDetailsCommand } from 'commands/tokenDetails'
-import { registerCommand as balanceCommand } from 'commands/balance'
-import { registerCommand as tcrListCommand } from 'commands/tcrList'
-import { registerCommand as dxUserDepositsCommand } from 'commands/dxUsersDeposit'
-import { registerCommand as dxBalancesCommand } from 'commands/dxBalances'
-import { registerCommand as uniswapRegister } from 'commands/uniswap'
+import { registerCommand as blockNumber } from 'commands/blockNumber'
+import { registerCommand as tokenDetails } from 'commands/tokenDetails'
+import { registerCommand as balance } from 'commands/balance'
+import { registerCommand as tcrList } from 'commands/tcrList'
+import { registerCommand as dxUserDeposits } from 'commands/dxUsersDeposit'
+import { registerCommand as dxBalances } from 'commands/dxBalances'
+import { registerCommand as uniswap } from 'commands/uniswap'
+import { registerCommand as signText } from 'commands/signText'
 
 console.log('\n' + chalk.yellow(figlet.textSync('eth-scripts', { horizontalLayout: 'full' })) + '\n')
 
@@ -19,12 +20,13 @@ assert(version, 'Version is unknown')
 program.version('0.0.1').description('A miscellaneous CLI for interacting with Ethereum')
 
 // Register commands
-blockNumberCommand(program)
-tokenDetailsCommand(program)
-balanceCommand(program)
-tcrListCommand(program)
-dxUserDepositsCommand(program)
-dxBalancesCommand(program)
-uniswapRegister(program)
+blockNumber(program)
+tokenDetails(program)
+balance(program)
+tcrList(program)
+dxUserDeposits(program)
+dxBalances(program)
+uniswap(program)
+signText(program)
 
 program.parse(process.argv)

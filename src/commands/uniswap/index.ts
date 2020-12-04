@@ -1,8 +1,9 @@
 import { CommanderStatic } from 'commander'
-import { registerCommand as sellPriceRegister } from './sellPrice'
-import { registerCommand as buyPriceRegister } from './buyPrice'
+
+import { registerCommand as sellPrice } from './sellPrice'
+import { registerCommand as buyPrice } from './buyPrice'
 
 export function registerCommand(program: CommanderStatic): void {
-  sellPriceRegister(program)
-  buyPriceRegister(program)
+  sellPrice(program)
+  buyPrice(program)
 }
