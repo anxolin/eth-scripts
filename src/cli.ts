@@ -3,30 +3,26 @@ import figlet from 'figlet'
 import program from 'commander'
 import assert from 'assert'
 
-import { registerCommand as blockNumber } from 'commands/blockNumber'
-import { registerCommand as tokenDetails } from 'commands/tokenDetails'
-import { registerCommand as balance } from 'commands/balance'
-import { registerCommand as tcrList } from 'commands/tcrList'
-import { registerCommand as dxUserDeposits } from 'commands/dxUsersDeposit'
-import { registerCommand as dxBalances } from 'commands/dxBalances'
-import { registerCommand as uniswap } from 'commands/uniswap'
-import { registerCommand as signText } from 'commands/signText'
+const COMMANDS = [
+  'commands/blockNumber',
+  'commands/tokenDetails',
+  'commands/balance',
+  'commands/tcrList',
+  'commands/signText',
+  'commands/dutchX',
+  'commands/uniswap',
+]
 
-console.log('\n' + chalk.yellow(figlet.textSync('eth-scripts', { horizontalLayout: 'full' })) + '\n')
+async function run() {
+  const version = process.env.npm_package_version
+  assert(version, 'Version is unknown')
 
-const version = process.env.npm_package_version
-assert(version, 'Version is unknown')
+  console.log('\n' + chalk.yellow(figlet.textSync('eth-scripts', { horizontalLayout: 'full' })) + '\n')
+  program.version('0.0.1').description('A miscellaneous CLI for interacting with Ethereum')
+  for (const command of COMMANDS) {
+    ;(await import(command)).registerCommand(program)
+  }
 
-program.version('0.0.1').description('A miscellaneous CLI for interacting with Ethereum')
-
-// Register commands
-blockNumber(program)
-tokenDetails(program)
-balance(program)
-tcrList(program)
-dxUserDeposits(program)
-dxBalances(program)
-uniswap(program)
-signText(program)
-
-program.parse(process.argv)
+  program.parse(process.argv)
+}
+run().catch(console.error)
