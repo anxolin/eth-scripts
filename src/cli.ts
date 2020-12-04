@@ -4,24 +4,25 @@ import program from 'commander'
 import assert from 'assert'
 
 const COMMANDS = [
-  // Basic, read operation
-  'commands/basic-read/blockNumber',
-  'commands/basic-read/balance',
+  // // Basic, read operation
+  // 'commands/basic-read/blockNumber',
+  // 'commands/basic-read/balance',
 
-  // ERC20
-  'commands/erc20/tcrList',
-  'commands/erc20/tokenDetails',
+  // // ERC20
+  // 'commands/erc20/tcrList',
+  // 'commands/erc20/tokenDetails',
 
   // Signing
   'commands/sign/signText',
+  'commands/sign/verifyText',
 
-  // DutchX
-  'commands/dutchX/balances',
-  'commands/dutchX/usersDeposit',
+  // // DutchX
+  // 'commands/dutchX/balances',
+  // 'commands/dutchX/usersDeposit',
 
-  // Uniswap
-  'commands/uniswap/sellPrice',
-  'commands/uniswap/buyPrice',
+  // // Uniswap
+  // 'commands/uniswap/sellPrice',
+  // 'commands/uniswap/buyPrice',
 ]
 
 async function run() {
@@ -34,6 +35,6 @@ async function run() {
     ;(await import(command)).registerCommand(program)
   }
 
-  program.parse(process.argv)
+  return program.parseAsync(process.argv)
 }
 run().catch(console.error)
