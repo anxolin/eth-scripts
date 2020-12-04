@@ -2,7 +2,6 @@ import chalk from 'chalk'
 import { CommanderStatic } from 'commander'
 import { dxAddress, dxDeploymentBlock } from 'const'
 import { Dutchx__factory } from 'contracts/gen/factories/Dutchx__factory'
-import { Event } from 'ethers'
 import { getProvider } from 'util/ethers'
 import { writeJson } from 'util/file'
 

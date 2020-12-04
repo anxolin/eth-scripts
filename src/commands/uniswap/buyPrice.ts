@@ -3,7 +3,7 @@ import chalk from 'chalk'
 import { CommanderStatic } from 'commander'
 import { ethers } from 'ethers'
 import { getProvider } from 'util/ethers'
-import { getPairInfo, printPools, printPrice, printTrade } from './uniswapUtils'
+import { getPairInfo, printPools, printPrice, printTrade } from './_uniswapUtils'
 
 async function run(fromAddress: string, toAddress: string, amount?: string) {
   const chainId = ChainId.MAINNET

@@ -2,7 +2,7 @@
 import chalk from 'chalk'
 import { CommanderStatic } from 'commander'
 import { ethers } from 'ethers'
-import { getProvider } from '../util/ethers'
+import { getProvider } from '../../util/ethers'
 
 async function run(address: string): Promise<void> {
   if (!address || !ethers.utils.isAddress(address)) {

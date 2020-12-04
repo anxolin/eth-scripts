@@ -1,7 +1,7 @@
 import chalk from 'chalk'
 import { CommanderStatic } from 'commander'
 import { TokenListsTcr__factory } from 'contracts/gen'
-import { getProvider } from '../util/ethers'
+import { getProvider } from '../../util/ethers'
 
 async function run(tcrAddress: string, listId: string | undefined) {
   const provider = getProvider()

@@ -2,7 +2,7 @@ import chalk from 'chalk'
 import { CommanderStatic } from 'commander'
 import { readAddressesFromFile, writeJson } from 'util/file'
 import { getTokensDetails } from 'util/tokens'
-import { getProvider } from '../util/ethers'
+import { getProvider } from '../../util/ethers'
 
 async function run(tokensFilePath: string, outputFilePath: string | undefined) {
   const tokens = readAddressesFromFile(tokensFilePath)
