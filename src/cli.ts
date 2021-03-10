@@ -13,12 +13,17 @@ const COMMANDS = [
   // 'commands/erc20/tokenDetails',
 
   // Signing
-  'commands/sign/signText',
-  'commands/sign/verifyText',
+  // 'commands/sign/signText',
+  // 'commands/sign/verifyText',
+
+  // Gnosis Protocol v2
+  // 'commands/gnosisProtocolV2/addresses',
 
   // // DutchX
-  // 'commands/dutchX/balances',
-  // 'commands/dutchX/usersDeposit',
+  'commands/dutchX/balances',
+  'commands/dutchX/usersDeposit',
+  'commands/dutchX/auctions',
+  // 'commands/dutchX/claimableFunds',
 
   // // Uniswap
   // 'commands/uniswap/sellPrice',
