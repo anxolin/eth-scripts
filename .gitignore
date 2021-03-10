@@ -3,4 +3,4 @@ build
 *.log
 .env
 !data/private/.gitkeep
-
+data/private
