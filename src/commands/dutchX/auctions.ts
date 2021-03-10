@@ -16,7 +16,7 @@ interface AuctionStartScheduledEvent {
   auctionStart: BigNumber
 }
 
-interface Auction {
+export interface Auction {
   sellToken: string
   buyToken: string
   auctionIndex: number
@@ -26,16 +26,7 @@ interface Auction {
 }
 
 async function run(filePath: string, program: Command): Promise<void> {
-  const { sell, buy, auctionFrom, auctionTo, ...other } = program.opts()
-  console.log({
-    filePath,
-    sell,
-    buy,
-    // token,
-    auctionFrom,
-    auctionTo,
-    other,
-  })
+  const { sell, buy, auctionFrom, auctionTo } = program.opts()
   const provider = getProvider()
   const dxContract = Dutchx__factory.connect(dxAddress, provider)
 
