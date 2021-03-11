@@ -1,11 +1,10 @@
 import { Command, CommanderStatic } from 'commander'
 import { readAddressesFromFile, writeJson } from 'util/file'
-import { dxAddress, dxHelperAddress } from 'const'
-import { Dutchx__factory } from 'contracts/gen/factories/Dutchx__factory'
+import { dxHelperAddress } from 'const'
 import { DutchxHelper__factory } from 'contracts/gen/factories/DutchxHelper__factory'
 import { getProvider } from 'util/ethers'
 import chalk from 'chalk'
-import { Dutchx, DutchxHelper } from 'contracts/gen'
+import { DutchxHelper } from 'contracts/gen'
 import { breakInBatches, withRetry } from 'util/misc'
 import tokenDetailsJson from '../../../data/dx-token-details.json'
 import allAuctions from '../../../data/dx-all-auctions.json'
@@ -54,7 +53,9 @@ function _getClaimableDetails(params: {
   if (usersBalances.length > 0) {
     if (usersBalances.length > 0) {
       console.log(
-        chalk`Found {yellow ${usersBalances.length}} unclaimed balances for user ${user} in ${sellToken}-${buyToken}`,
+        chalk`\tFound {yellow ${
+          usersBalances.length
+        }} unclaimed balances for user ${user} in ${sellToken}-${buyToken}: ${indices.join(', ')}`,
       )
     }
 
@@ -110,7 +111,6 @@ function _getClaimableDetails(params: {
 async function getClaimableFunds(
   user: string,
   lastAuction: LastAuction,
-  dxContract: Dutchx,
   dxHelper: DutchxHelper,
   tokenMap: Map<string, TokenDetails>,
 ): Promise<ClaimableDetails[]> {
@@ -191,7 +191,6 @@ async function run(usersFilePath: string, outputFilePath: string, program: Comma
   }
 
   const provider = getProvider()
-  const dxContract = Dutchx__factory.connect(dxAddress, provider)
   const dxHelperContract = DutchxHelper__factory.connect(dxHelperAddress, provider)
 
   const lastAuctions = _getLastAuctions(allAuctions, token)
@@ -213,10 +212,10 @@ async function run(usersFilePath: string, outputFilePath: string, program: Comma
     )
 
     for (const usersBatch of usersBatches) {
-      console.log(chalk`Get Claimable auctions for users {yellow ${usersBatch.join(', ')}}`)
+      console.log(chalk`\tGet Claimable auctions for users {yellow ${usersBatch.join(', ')}}`)
       // Fetch a few users in parallel
       const claimableFundsBatch = await Promise.all(
-        usersBatch.map((user) => getClaimableFunds(user, lastAuction, dxContract, dxHelperContract, tokensMap)),
+        usersBatch.map((user) => getClaimableFunds(user, lastAuction, dxHelperContract, tokensMap)),
       )
 
       // Flatten claimable funds, and concat
