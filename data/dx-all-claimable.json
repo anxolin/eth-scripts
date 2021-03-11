@@ -1,0 +1,356 @@
+[
+  {
+    "auctionIndex": 191,
+    "sellerBalancesAtoms": "6188379166666666667",
+    "sellerBalances": "6.188379166666666667",
+    "sellToken": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+    "sellTokenDetails": {
+      "label": "WETH",
+      "name": "Wrapped Ether",
+      "symbol": "WETH",
+      "decimals": 18,
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+    },
+    "buyToken": "0xd26114cd6EE289AccF82350c8d8487fedB8A0C07",
+    "buyTokenDetails": {
+      "label": "OMG",
+      "name": "OMGToken",
+      "symbol": "OMG",
+      "decimals": 18,
+      "address": "0xd26114cd6EE289AccF82350c8d8487fedB8A0C07"
+    },
+    "user": "0x2dd2afA618F497EFdb3A8c1707b06DC00b31fa19"
+  },
+  {
+    "auctionIndex": 2,
+    "buyerBalancesAtoms": "6572682448866672500383",
+    "buyerBalances": "6572.682448866672500383",
+    "sellToken": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+    "sellTokenDetails": {
+      "label": "WETH",
+      "name": "Wrapped Ether",
+      "symbol": "WETH",
+      "decimals": 18,
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+    },
+    "buyToken": "0xdd974D5C2e2928deA5F71b9825b8b646686BD200",
+    "buyTokenDetails": {
+      "label": "KNC",
+      "name": "Kyber Network Crystal",
+      "symbol": "KNC",
+      "decimals": 18,
+      "address": "0xdd974d5c2e2928dea5f71b9825b8b646686bd200"
+    },
+    "user": "0x2259099897AfAf3813fef3284b91D2B227b66AD4"
+  },
+  {
+    "auctionIndex": 68,
+    "buyerBalancesAtoms": "85685250000000000",
+    "buyerBalances": "0.08568525",
+    "sellToken": "0x543Ff227F64Aa17eA132Bf9886cAb5DB55DCAddf",
+    "sellTokenDetails": {
+      "label": "GEN",
+      "name": "DAOstack",
+      "symbol": "GEN",
+      "decimals": 18,
+      "address": "0x543ff227f64aa17ea132bf9886cab5db55dcaddf"
+    },
+    "buyToken": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+    "buyTokenDetails": {
+      "label": "WETH",
+      "name": "Wrapped Ether",
+      "symbol": "WETH",
+      "decimals": 18,
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+    },
+    "user": "0x144Ce006a426227340247C2fF6dCFD058775BD32"
+  },
+  {
+    "auctionIndex": 51,
+    "buyerBalancesAtoms": "4975000000000000",
+    "buyerBalances": "0.004975",
+    "sellToken": "0x543Ff227F64Aa17eA132Bf9886cAb5DB55DCAddf",
+    "sellTokenDetails": {
+      "label": "GEN",
+      "name": "DAOstack",
+      "symbol": "GEN",
+      "decimals": 18,
+      "address": "0x543ff227f64aa17ea132bf9886cab5db55dcaddf"
+    },
+    "buyToken": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+    "buyTokenDetails": {
+      "label": "WETH",
+      "name": "Wrapped Ether",
+      "symbol": "WETH",
+      "decimals": 18,
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+    },
+    "user": "0x52DF85E9De71aa1C210873bcF37EC46d36c99dc2"
+  },
+  {
+    "auctionIndex": 205,
+    "sellerBalancesAtoms": "99500000000000000000",
+    "sellerBalances": "99.5",
+    "sellToken": "0x543Ff227F64Aa17eA132Bf9886cAb5DB55DCAddf",
+    "sellTokenDetails": {
+      "label": "GEN",
+      "name": "DAOstack",
+      "symbol": "GEN",
+      "decimals": 18,
+      "address": "0x543ff227f64aa17ea132bf9886cab5db55dcaddf"
+    },
+    "buyToken": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+    "buyTokenDetails": {
+      "label": "WETH",
+      "name": "Wrapped Ether",
+      "symbol": "WETH",
+      "decimals": 18,
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+    },
+    "user": "0x1fa06c90982cA2D27108BA5c533ea1647AaF02AE"
+  },
+  {
+    "auctionIndex": 304,
+    "buyerBalancesAtoms": "79600000000000000",
+    "buyerBalances": "0.0796",
+    "sellToken": "0x543Ff227F64Aa17eA132Bf9886cAb5DB55DCAddf",
+    "sellTokenDetails": {
+      "label": "GEN",
+      "name": "DAOstack",
+      "symbol": "GEN",
+      "decimals": 18,
+      "address": "0x543ff227f64aa17ea132bf9886cab5db55dcaddf"
+    },
+    "buyToken": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+    "buyTokenDetails": {
+      "label": "WETH",
+      "name": "Wrapped Ether",
+      "symbol": "WETH",
+      "decimals": 18,
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+    },
+    "user": "0xA343618637bcECb12A723C9007360c305b0507c2"
+  },
+  {
+    "auctionIndex": 741,
+    "sellerBalancesAtoms": "256759317047175",
+    "sellerBalances": "0.000256759317047175",
+    "sellToken": "0x543Ff227F64Aa17eA132Bf9886cAb5DB55DCAddf",
+    "sellTokenDetails": {
+      "label": "GEN",
+      "name": "DAOstack",
+      "symbol": "GEN",
+      "decimals": 18,
+      "address": "0x543ff227f64aa17ea132bf9886cab5db55dcaddf"
+    },
+    "buyToken": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+    "buyTokenDetails": {
+      "label": "WETH",
+      "name": "Wrapped Ether",
+      "symbol": "WETH",
+      "decimals": 18,
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+    },
+    "user": "0x0f1c5F26e6329Ac665B44baF28e3418044b6b983"
+  },
+  {
+    "auctionIndex": 657,
+    "sellerBalancesAtoms": "2079911406418219847",
+    "sellerBalances": "2.079911406418219847",
+    "sellToken": "0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2",
+    "sellTokenDetails": {
+      "label": "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2",
+      "decimals": 18,
+      "address": "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2"
+    },
+    "buyToken": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+    "buyTokenDetails": {
+      "label": "WETH",
+      "name": "Wrapped Ether",
+      "symbol": "WETH",
+      "decimals": 18,
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+    },
+    "user": "0x01a6e0f4e7f723C7110BE5A88644eb4763810563"
+  },
+  {
+    "auctionIndex": 62,
+    "buyerBalancesAtoms": "9950000000000000",
+    "buyerBalances": "0.00995",
+    "sellToken": "0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2",
+    "sellTokenDetails": {
+      "label": "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2",
+      "decimals": 18,
+      "address": "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2"
+    },
+    "buyToken": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+    "buyTokenDetails": {
+      "label": "WETH",
+      "name": "Wrapped Ether",
+      "symbol": "WETH",
+      "decimals": 18,
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+    },
+    "user": "0x95Db47d3e9D574Cd15b0f02c845bC2971b0fC3e1"
+  },
+  {
+    "auctionIndex": 214,
+    "buyerBalancesAtoms": "99500000000000000",
+    "buyerBalances": "0.0995",
+    "sellToken": "0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2",
+    "sellTokenDetails": {
+      "label": "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2",
+      "decimals": 18,
+      "address": "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2"
+    },
+    "buyToken": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+    "buyTokenDetails": {
+      "label": "WETH",
+      "name": "Wrapped Ether",
+      "symbol": "WETH",
+      "decimals": 18,
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+    },
+    "user": "0xEC3281124d4c2FCA8A88e3076C1E7749CfEcb7F2"
+  },
+  {
+    "auctionIndex": 34,
+    "buyerBalancesAtoms": "298500000000000000",
+    "buyerBalances": "0.2985",
+    "sellToken": "0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359",
+    "sellTokenDetails": {
+      "label": "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359",
+      "decimals": 18,
+      "address": "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359"
+    },
+    "buyToken": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+    "buyTokenDetails": {
+      "label": "WETH",
+      "name": "Wrapped Ether",
+      "symbol": "WETH",
+      "decimals": 18,
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+    },
+    "user": "0x70Be2645643f7e0Fe6cb7c3531a507D6f9a8FaeB"
+  },
+  {
+    "auctionIndex": 292,
+    "buyerBalancesAtoms": "995000000000000",
+    "buyerBalances": "0.000995",
+    "sellToken": "0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359",
+    "sellTokenDetails": {
+      "label": "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359",
+      "decimals": 18,
+      "address": "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359"
+    },
+    "buyToken": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+    "buyTokenDetails": {
+      "label": "WETH",
+      "name": "Wrapped Ether",
+      "symbol": "WETH",
+      "decimals": 18,
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+    },
+    "user": "0xfCC716dF0DF69323D81815450acbCa4551a9D944"
+  },
+  {
+    "auctionIndex": 326,
+    "sellerBalancesAtoms": "6965000000000000000",
+    "sellerBalances": "6.965",
+    "sellToken": "0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359",
+    "sellTokenDetails": {
+      "label": "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359",
+      "decimals": 18,
+      "address": "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359"
+    },
+    "buyToken": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+    "buyTokenDetails": {
+      "label": "WETH",
+      "name": "Wrapped Ether",
+      "symbol": "WETH",
+      "decimals": 18,
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+    },
+    "user": "0x4defA30195094963cFAc7285d8d6E6E523c7f90D"
+  },
+  {
+    "auctionIndex": 248,
+    "sellerBalancesAtoms": "995000000000000000",
+    "sellerBalances": "0.995",
+    "sellToken": "0x6810e776880C02933D47DB1b9fc05908e5386b96",
+    "sellTokenDetails": {
+      "label": "GNO",
+      "name": "Gnosis Token",
+      "symbol": "GNO",
+      "decimals": 18,
+      "address": "0x6810e776880c02933d47db1b9fc05908e5386b96"
+    },
+    "buyToken": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+    "buyTokenDetails": {
+      "label": "WETH",
+      "name": "Wrapped Ether",
+      "symbol": "WETH",
+      "decimals": 18,
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+    },
+    "user": "0xDFbe002Af52497f4812748437834e9bE54bc52A2"
+  },
+  {
+    "auctionIndex": 224,
+    "sellerBalancesAtoms": "52253568363896540086227",
+    "sellerBalances": "52253.568363896540086227",
+    "sellToken": "0x2C4e8f2D746113d0696cE89B35F0d8bF88E0AEcA",
+    "sellTokenDetails": {
+      "label": "ST",
+      "name": "Simple Token",
+      "symbol": "ST",
+      "decimals": 18,
+      "address": "0x2c4e8f2d746113d0696ce89b35f0d8bf88e0aeca"
+    },
+    "buyToken": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+    "buyTokenDetails": {
+      "label": "WETH",
+      "name": "Wrapped Ether",
+      "symbol": "WETH",
+      "decimals": 18,
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+    },
+    "user": "0x00ECd4635c80d47A8B5ffBFD2EB794E0Ce6a8689"
+  },
+  {
+    "auctionIndex": 112,
+    "sellerBalancesAtoms": "1943535639000000000000",
+    "sellToken": "0x985dd3D42De1e256d09e1c10F112bCCB8015AD41",
+    "buyToken": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+    "buyTokenDetails": {
+      "label": "WETH",
+      "name": "Wrapped Ether",
+      "symbol": "WETH",
+      "decimals": 18,
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+    },
+    "user": "0x6dd5f1Bf1Ffa6A3173e333c1588f4cDdE8c6799E"
+  },
+  {
+    "auctionIndex": 2,
+    "sellerBalancesAtoms": "13930000000000000000",
+    "sellerBalances": "13.93",
+    "sellToken": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+    "sellTokenDetails": {
+      "label": "DAI",
+      "name": "Dai Stablecoin",
+      "symbol": "DAI",
+      "decimals": 18,
+      "address": "0x6b175474e89094c44da98b954eedeac495271d0f"
+    },
+    "buyToken": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+    "buyTokenDetails": {
+      "label": "WETH",
+      "name": "Wrapped Ether",
+      "symbol": "WETH",
+      "decimals": 18,
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+    },
+    "user": "0x153685A03c2025b6825AE164e2ff5681EE487667"
+  }
+]

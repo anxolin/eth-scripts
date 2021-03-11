@@ -23,7 +23,7 @@ const COMMANDS = [
   'commands/dutchX/balances',
   'commands/dutchX/usersDeposit',
   'commands/dutchX/auctions',
-  // 'commands/dutchX/claimableFunds',
+  'commands/dutchX/claimable',
 
   // // Uniswap
   // 'commands/uniswap/sellPrice',

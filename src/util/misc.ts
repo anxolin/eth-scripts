@@ -16,3 +16,12 @@ export async function withRetry<T>(run: () => Promise<T>, attempts = 100): Promi
 }
 
 export const noop: () => undefined = () => undefined
+
+export function breakInBatches<T>(list: T[], size: number): T[][] {
+  const result: T[][] = []
+  for (let i = 0, j = list.length; i < j; i += size) {
+    result.push(list.slice(i, i + size))
+  }
+
+  return result
+}
