@@ -4,6 +4,9 @@ import program from 'commander'
 import assert from 'assert'
 
 const COMMANDS = [
+  // DutchX
+  'commands/format/csv2json',
+
   // // Basic, read operation
   // 'commands/basic-read/blockNumber',
   // 'commands/basic-read/balance',
@@ -24,6 +27,8 @@ const COMMANDS = [
   'commands/dutchX/usersDeposit',
   'commands/dutchX/auctions',
   'commands/dutchX/claimable',
+  'commands/dutchX/users',
+  'commands/dutchX/claim',
 
   // // Uniswap
   // 'commands/uniswap/sellPrice',
