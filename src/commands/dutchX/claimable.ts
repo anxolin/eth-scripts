@@ -81,24 +81,37 @@ function _getClaimableDetails(params: {
       if (buyTokenDetails) {
         const { decimals, symbol, name } = buyTokenDetails
         Object.assign(claimableFund, {
-          sellTokenDecimals: decimals,
-          sellTokenName: name,
-          sellTokenSymbol: symbol,
+          buyTokenDecimals: decimals,
+          buyTokenName: name,
+          buyTokenSymbol: symbol,
         })
       }
 
       if (isSeller) {
-        claimableFund.sellerBalancesAtoms = usersBalances[i].toString()
-        claimableFund.sellerBalances = ethers.utils.formatUnits(
-          usersBalances[i],
-          claimableFund.sellTokenDecimals ?? DEFAULT_DECIMALS,
-        )
+        Object.assign(claimableFund, {
+          sellerBalancesAtoms: usersBalances[i].toString(),
+          sellerBalances: ethers.utils.formatUnits(
+            usersBalances[i],
+            claimableFund.sellTokenDecimals ?? DEFAULT_DECIMALS,
+          ),
+          buyerBalancesAtoms: '0',
+          buyerBalances: '0',
+        })
       } else {
         claimableFund.buyerBalancesAtoms = usersBalances[i].toString()
         claimableFund.buyerBalances = ethers.utils.formatUnits(
           usersBalances[i],
           claimableFund.buyTokenDecimals ?? DEFAULT_DECIMALS,
         )
+        Object.assign(claimableFund, {
+          buyerBalancesAtoms: usersBalances[i].toString(),
+          buyerBalances: ethers.utils.formatUnits(
+            usersBalances[i],
+            claimableFund.sellTokenDecimals ?? DEFAULT_DECIMALS,
+          ),
+          sellerBalancesAtoms: '0',
+          sellerBalances: '0',
+        })
       }
 
       claimableFunds.push(claimableFund)
@@ -195,7 +208,7 @@ async function run(usersFilePath: string, outputFilePath: string, program: Comma
 
   const lastAuctions = _getLastAuctions(allAuctions, token)
   console.log(
-    'Last auction',
+    'Last auctions',
     lastAuctions.map((a) => `${a.sellToken}-${a.buyToken}: ${a.auctionIndex}`),
   )
 
@@ -208,7 +221,7 @@ async function run(usersFilePath: string, outputFilePath: string, program: Comma
   for (const lastAuction of lastAuctions) {
     const { sellToken, buyToken, auctionIndex } = lastAuction
     console.log(
-      chalk`Get Claimable auctions for: pair {yellow ${sellToken}}-{yellow ${buyToken}}, auction ${auctionIndex}`,
+      chalk`\nGet Claimable auctions for: pair {yellow ${sellToken}}-{yellow ${buyToken}}, auction ${auctionIndex}`,
     )
 
     for (const usersBatch of usersBatches) {
