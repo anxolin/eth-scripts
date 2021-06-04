@@ -1,8 +1,8 @@
 import { CommanderStatic } from 'commander'
 import { writeJson } from 'util/file'
 import chalk from 'chalk'
-import { Dutchx } from 'contracts/gen'
-import allClaimable from '../../../data/dx-all-claimable.json'
+// import allClaimable from '../../../data/dx-all-claimable.json'
+import allClaimable from '../../../claimable.json'
 import { BigNumber } from 'ethers'
 import { getDutchX } from './utils'
 
@@ -29,31 +29,15 @@ function addIntoAuctionClaims(sellToken: string, buyToken: string, index: string
   auctionClaims.indices.push(index)
 }
 
-function _getClaimTx(user: string, auctionClaims: AuctionClaims, dutchX: Dutchx): ClaimTx {
-  const { sellTokens, buyTokens, indices } = auctionClaims
-  const txData = dutchX.interface.encodeFunctionData('claimTokensFromSeveralAuctionsAsSeller', [
-    sellTokens,
-    buyTokens,
-    indices,
-    user,
-  ])
-
-  return {
-    user,
-    auctionClaims,
-    txData,
-  }
-}
-
 function _getClaimableData(): Map<string, UserClaimData> {
   return allClaimable.reduce<Map<string, UserClaimData>>((acc, claimable) => {
     const {
       user,
-      sellTokenAddress: sellToken,
-      buyTokenAddress: buyToken,
+      sellToken: sellToken,
+      buyToken: buyToken,
       auctionIndex: index,
-      sellerBalanceAtoms: sellerBalance,
-      buyerBalanceAtoms: buyerBalance,
+      sellerBalancesAtoms: sellerBalance,
+      buyerBalancesAtoms: buyerBalance,
     } = claimable
 
     let claimableData = acc.get(user)
@@ -75,12 +59,12 @@ function _getClaimableData(): Map<string, UserClaimData> {
 
     const sellerBalanceBn = BigNumber.from(sellerBalance)
     if (!sellerBalanceBn.isZero()) {
-      addIntoAuctionClaims(sellToken, buyToken, index, claimableData.seller)
+      addIntoAuctionClaims(sellToken, buyToken, index.toString(), claimableData.seller)
     }
 
     const buyerBalanceBn = BigNumber.from(buyerBalance)
     if (!buyerBalanceBn.isZero()) {
-      addIntoAuctionClaims(sellToken, buyToken, index, claimableData.buyer)
+      addIntoAuctionClaims(sellToken, buyToken, index.toString(), claimableData.buyer)
     }
 
     return acc
@@ -97,10 +81,28 @@ async function run(outputFilePath: string): Promise<void> {
   const txs: ClaimTx[] = []
   for (const [user, claimableData] of claimableDataUsers.entries()) {
     if (claimableData.seller.indices.length > 0) {
-      txs.push(_getClaimTx(user, claimableData.seller, dutchX))
+      const { sellTokens, buyTokens, indices } = claimableData.seller
+      const txData = dutchX.interface.encodeFunctionData('claimTokensFromSeveralAuctionsAsSeller', [
+        sellTokens,
+        buyTokens,
+        indices,
+        user,
+      ])
+
+      // _getClaimTx(user, claimableData.seller, dutchX)
+      txs.push({ user, auctionClaims: claimableData.seller, txData })
     }
     if (claimableData.buyer.indices.length > 0) {
-      txs.push(_getClaimTx(user, claimableData.buyer, dutchX))
+      const { sellTokens, buyTokens, indices } = claimableData.buyer
+      const txData = dutchX.interface.encodeFunctionData('claimTokensFromSeveralAuctionsAsBuyer', [
+        sellTokens,
+        buyTokens,
+        indices,
+        user,
+      ])
+
+      // _getClaimTx(user, claimableData.seller, dutchX)
+      txs.push({ user, auctionClaims: claimableData.buyer, txData })
     }
   }
 
