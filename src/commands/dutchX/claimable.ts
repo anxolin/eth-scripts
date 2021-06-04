@@ -4,7 +4,7 @@ import { dxHelperAddress } from 'const'
 import { DutchxHelper__factory } from 'contracts/gen/factories/DutchxHelper__factory'
 import { getProvider } from 'util/ethers'
 import chalk from 'chalk'
-import { DutchxHelper } from 'contracts/gen'
+import { Dutchx, DutchxHelper } from 'contracts/gen'
 import { breakInBatches, withRetry } from 'util/misc'
 import tokenDetailsJson from '../../../data/dx-token-details.json'
 import allAuctions from '../../../data/dx-all-auctions.json'
@@ -12,25 +12,51 @@ import { TokenDetails } from 'types'
 import { BigNumber, ethers } from 'ethers'
 import { CsvHeaders, writeCsvFile } from 'util/csv'
 import { Auction } from 'commands/dutchX/auctions'
+import { getDutchX } from './utils'
+import { BigNumber as BigNum } from 'bignumber.js'
 
 const BATCH_SIZE = 50
 const DEFAULT_DECIMALS = 18
+const ZERO = new BigNum('0')
+
+type ClaimableType = 'seller' | 'buyer'
 
 interface ClaimableDetails {
+  type: ClaimableType
   user: string
   auctionIndex: number
+  lastAuctionIndex: number
+
+  closingPrice?: string
+
+  claimableInputBalancesAtoms?: string
+  claimableInputBalances?: string
+  inputTokenSymbol?: string
+
+  claimableOutputBalancesAtoms?: string
+  claimableOutputBalances?: string
+  outputTokenSymbol?: string
+
   sellToken: string
   sellTokenName?: string
   sellTokenSymbol?: string
   sellTokenDecimals?: string
+
   buyToken: string
   buyTokenName?: string
   buyTokenSymbol?: string
   buyTokenDecimals?: string
-  sellerBalancesAtoms?: string
-  sellerBalances?: string
-  buyerBalancesAtoms?: string
-  buyerBalances?: string
+
+  // sellerBalancesAtoms?: string
+  // sellerBalances?: string
+
+  // buyerBalancesAtoms?: string
+  // buyerBalances?: string
+}
+
+interface Price {
+  num: BigNum
+  den: BigNum
 }
 
 interface LastAuction {
@@ -40,16 +66,18 @@ interface LastAuction {
 }
 
 function _getClaimableDetails(params: {
+  type: ClaimableType
   user: string
   sellToken: string
   buyToken: string
   indices: BigNumber[]
   usersBalances: BigNumber[]
   tokenMap: Map<string, TokenDetails>
-  isSeller: boolean
-}) {
+  closingPrice: BigNum
+  auctionIndex: number
+}): ClaimableDetails[] {
   const claimableFunds: ClaimableDetails[] = []
-  const { user, indices, usersBalances, tokenMap, sellToken, buyToken, isSeller } = params
+  const { type, user, indices, usersBalances, tokenMap, sellToken, buyToken, closingPrice, auctionIndex } = params
   if (usersBalances.length > 0) {
     if (usersBalances.length > 0) {
       console.log(
@@ -61,12 +89,16 @@ function _getClaimableDetails(params: {
 
     for (let i = 0; i < usersBalances.length; i++) {
       const claimableFund: ClaimableDetails = {
+        type,
         auctionIndex: indices[i].toNumber(),
         sellToken,
         buyToken,
         user,
+        closingPrice: closingPrice.toString(),
+        lastAuctionIndex: auctionIndex,
       }
 
+      // Sell token
       const sellTokenDetails = tokenMap.get(sellToken.toLowerCase())
       if (sellTokenDetails) {
         const { decimals, symbol, name } = sellTokenDetails
@@ -77,6 +109,7 @@ function _getClaimableDetails(params: {
         })
       }
 
+      // Buy token
       const buyTokenDetails = tokenMap.get(buyToken.toLowerCase())
       if (buyTokenDetails) {
         const { decimals, symbol, name } = buyTokenDetails
@@ -87,32 +120,40 @@ function _getClaimableDetails(params: {
         })
       }
 
-      if (isSeller) {
-        Object.assign(claimableFund, {
-          sellerBalancesAtoms: usersBalances[i].toString(),
-          sellerBalances: ethers.utils.formatUnits(
-            usersBalances[i],
-            claimableFund.sellTokenDecimals ?? DEFAULT_DECIMALS,
-          ),
-          buyerBalancesAtoms: '0',
-          buyerBalances: '0',
-        })
+      // Calculate output tokens
+      let claimableOutputBalancesAtoms: BigNum,
+        decimals: string,
+        inputTokenSymbol: string | undefined,
+        outputTokenSymbol: string | undefined
+      if (type === 'seller') {
+        inputTokenSymbol = claimableFund.sellTokenSymbol
+        outputTokenSymbol = claimableFund.buyTokenSymbol
+        claimableOutputBalancesAtoms = new BigNum(usersBalances[i].toString()).multipliedBy(closingPrice)
+        decimals = claimableFund.sellTokenDecimals ?? DEFAULT_DECIMALS.toString()
       } else {
-        claimableFund.buyerBalancesAtoms = usersBalances[i].toString()
-        claimableFund.buyerBalances = ethers.utils.formatUnits(
-          usersBalances[i],
-          claimableFund.buyTokenDecimals ?? DEFAULT_DECIMALS,
-        )
-        Object.assign(claimableFund, {
-          buyerBalancesAtoms: usersBalances[i].toString(),
-          buyerBalances: ethers.utils.formatUnits(
-            usersBalances[i],
-            claimableFund.sellTokenDecimals ?? DEFAULT_DECIMALS,
-          ),
-          sellerBalancesAtoms: '0',
-          sellerBalances: '0',
-        })
+        inputTokenSymbol = claimableFund.buyTokenSymbol
+        outputTokenSymbol = claimableFund.sellTokenSymbol
+        claimableOutputBalancesAtoms = closingPrice.isZero()
+          ? ZERO
+          : new BigNum(usersBalances[i].toString()).div(closingPrice)
+        decimals = claimableFund.buyTokenDecimals ?? DEFAULT_DECIMALS.toString()
       }
+
+      // Assign input output
+      Object.assign(claimableFund, {
+        // Input
+        claimableInputBalancesAtoms: usersBalances[i].toString(),
+        claimableInputBalances: ethers.utils.formatUnits(usersBalances[i], decimals),
+        inputTokenSymbol,
+
+        // Output at closing price
+        claimableOutputBalancesAtoms: claimableOutputBalancesAtoms.toString(),
+        claimableOutputBalances: ethers.utils.formatUnits(
+          claimableOutputBalancesAtoms.toFixed(0, BigNum.ROUND_DOWN),
+          decimals,
+        ),
+        outputTokenSymbol,
+      })
 
       claimableFunds.push(claimableFund)
     }
@@ -125,6 +166,7 @@ async function getClaimableFunds(
   user: string,
   lastAuction: LastAuction,
   dxHelper: DutchxHelper,
+  dutchX: Dutchx,
   tokenMap: Map<string, TokenDetails>,
 ): Promise<ClaimableDetails[]> {
   const { auctionIndex, sellToken, buyToken } = lastAuction
@@ -141,23 +183,32 @@ async function getClaimableFunds(
       usersBalances: usersBalancesBuyer,
     } = await dxHelper.getIndicesWithClaimableTokensForBuyers(sellToken, buyToken, user, auctionIndex)
 
+    const closingPriceFraction = await dutchX.getPriceInPastAuction(sellToken, buyToken, auctionIndex)
+    const closingPrice = new BigNum(closingPriceFraction.num.toString()).div(
+      new BigNum(closingPriceFraction.den.toString()),
+    )
+
     const sellerClaimable = _getClaimableDetails({
+      type: 'seller',
       user,
       sellToken,
       buyToken,
       indices: indicesSeller,
       usersBalances: usersBalancesSeller,
       tokenMap,
-      isSeller: true,
+      closingPrice,
+      auctionIndex,
     })
     const buyerClaimable = _getClaimableDetails({
+      type: 'buyer',
       user,
       sellToken,
       buyToken,
       indices: indicesBuyer,
       usersBalances: usersBalancesBuyer,
       tokenMap,
-      isSeller: false,
+      closingPrice,
+      auctionIndex,
     })
 
     // Concat all claimable amounts
@@ -205,6 +256,7 @@ async function run(usersFilePath: string, outputFilePath: string, program: Comma
 
   const provider = getProvider()
   const dxHelperContract = DutchxHelper__factory.connect(dxHelperAddress, provider)
+  const dutchX = getDutchX()
 
   const lastAuctions = _getLastAuctions(allAuctions, token)
   console.log(
@@ -228,7 +280,7 @@ async function run(usersFilePath: string, outputFilePath: string, program: Comma
       console.log(chalk`\tGet Claimable auctions for users {yellow ${usersBatch.join(', ')}}`)
       // Fetch a few users in parallel
       const claimableFundsBatch = await Promise.all(
-        usersBatch.map((user) => getClaimableFunds(user, lastAuction, dxHelperContract, tokensMap)),
+        usersBatch.map((user) => getClaimableFunds(user, lastAuction, dxHelperContract, dutchX, tokensMap)),
       )
 
       // Flatten claimable funds, and concat
@@ -244,21 +296,32 @@ async function run(usersFilePath: string, outputFilePath: string, program: Comma
 
   if (outputFilePath.endsWith('.csv')) {
     const headers: CsvHeaders = [
-      { id: 'user', title: 'user' },
-      { id: 'sellerBalances', title: 'Seller Balance' },
-      { id: 'sellTokenSymbol', title: 'Sell Token' },
-      { id: 'buyerBalances', title: 'Buyer Balance' },
-      { id: 'buyTokenSymbol', title: 'Buy Token' },
+      { id: 'type', title: 'Claim Type' },
+      { id: 'user', title: 'User' },
+      { id: 'closingPrice', title: 'Closing Price' },
+
+      { id: 'claimableInputBalances', title: 'Claimable Input' },
+      { id: 'inputTokenSymbol', title: 'Output Token' },
+
+      { id: 'claimableOutputBalances', title: 'Receivable Output' },
+      { id: 'outputTokenSymbol', title: 'Output Token' },
+
       { id: 'auctionIndex', title: 'Auction Index' },
-      { id: 'sellTokenName', title: 'Sell Token Name' },
-      { id: 'buyTokenName', title: 'Sell Token Name' },
+      { id: 'sellTokenSymbol', title: 'Sell Token' },
+      { id: 'buyTokenSymbol', title: 'Buy Token' },
+      { id: 'lastAuctionIndex', title: 'Last Auction Index' },
+
       { id: 'sellToken', title: 'Sell Token Address' },
       { id: 'buyToken', title: 'Buy Token Address' },
-      { id: 'sellTokenDecimals', title: 'Sell Token Decimals' },
-      { id: 'buyTokenDecimals', title: 'Sell Token Decimals' },
-      { id: 'sellerBalancesAtoms', title: 'Seller Balance Atoms' },
-      { id: 'buyerBalancesAtoms', title: 'Buyer Balance Atoms' },
+      { id: 'claimableInputBalancesAtoms', title: 'Claimable Input Balance Atoms' },
+      { id: 'claimableOutputBalancesAtoms', title: 'Claimable Input Balance Atoms' },
+
+      // { id: 'buyTokenName', title: 'Sell Token Name' },
+      // { id: 'sellTokenName', title: 'Sell Token Name' },
+      // { id: 'sellTokenDecimals', title: 'Sell Token Decimals' },
+      // { id: 'buyTokenDecimals', title: 'Sell Token Decimals' },
     ]
+
     writeCsvFile(outputFilePath, claimableFunds, headers)
     console.log(chalk`Written users in file {white ${outputFilePath}}`)
   } else {
